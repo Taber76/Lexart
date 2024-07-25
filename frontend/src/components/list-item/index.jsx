@@ -1,9 +1,11 @@
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { apiService } from '../../services/apiService';
 import { ModalInteractive } from '../modal-interactive';
+import { deleteProduct } from '../../store/productsSlice';
 
 const ListItem = ({ item, columnWidths, handleDelete,
   type // for delete with apiService and navigate to update (user, contact, ex.)
@@ -11,6 +13,7 @@ const ListItem = ({ item, columnWidths, handleDelete,
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const keys = Object.keys(columnWidths);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleTrash = () => {
@@ -22,6 +25,7 @@ const ListItem = ({ item, columnWidths, handleDelete,
     try {
       const res = await apiService.delete(`${type}/delete/${item.id}`);
       if (res.status === 200) {
+        dispatch(deleteProduct({ id: item.id }))
         setShowModal(false);
         handleDelete();
       } else {

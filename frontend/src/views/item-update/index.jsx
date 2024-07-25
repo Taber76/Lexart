@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { apiService } from '../../services/apiService';
 import { Modal, FormRegister } from '../../components';
+import { updateProduct } from '../../store/productsSlice';
 
 const ItemUpdate = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const [formData, setFormData] = useState({});
   const location = useLocation();
+  const dispatch = useDispatch();
   const navegate = useNavigate()
 
   const activeModal = (text, time) => {
@@ -38,6 +41,7 @@ const ItemUpdate = () => {
     try {
       const res = await apiService.postPut('PUT', 'products/update/' + location.state.item_id, formData)
       if (res.status === 200) {
+        dispatch(updateProduct({ id: location.state.item_id, updates: formData }))
         activeModal("Produto atualizado com sucesso.", 1500)
         setTimeout(() => {
           navegate('/items')

@@ -1,15 +1,18 @@
 import { FaPlus } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
-import { Modal, List } from '../../components';
+import { setProducts } from '../../store/productsSlice';
+import { Modal, List, Filter } from '../../components';
 
 const Items = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
-  const [itemList, setItemList] = useState([])
-  const [deleteItem, setDeleteItem] = useState(false)
+  const items = useSelector(state => state.products.products)
+  const filteredItems = useSelector(state => state.products.filteredProducts)
+  const dispatch = useDispatch();
   const navigate = useNavigate()
 
   const activeModal = (text, time) => {
@@ -33,9 +36,9 @@ const Items = () => {
       const res = await apiService.get('products/getall')
       if (res.status === 200) {
         const data = await res.json()
-        const items = data.products.map(({ image, active, created_at, ...rest }) => rest)
+        const itemsList = data.products.map(({ image, active, created_at, ...rest }) => rest)
         if (window.innerWidth < 640) {
-          items.forEach((item) => {
+          itemsList.forEach((item) => {
             item.brand = `Marca: ${item.brand}`
             item.model = `Modelo: ${item.model}`
             item.description = `Descrição: ${item.description}`
@@ -43,19 +46,30 @@ const Items = () => {
             item.updated_at = `Atualizado: ${item.updated_at}`
           })
         }
-        setItemList(items)
+        dispatch(setProducts(itemsList))
       } else {
         activeModal('Não foi possível carregar os itens.')
       }
     }
 
-    getItems()
-  }, [deleteItem])
+    if (items.length === 0) {
+      getItems()
+    }
+
+  }, [filteredItems])
 
   return (
     <div className="py-4 md:py-6 bg-gray-100">
+
       <div className="flex flex-col text-center items-center">
-        <h2 className="text-2xl font-bold text-gray-700">Produtos</h2>
+        <div className="flex text-center items-center">
+          <h2 className="text-2xl font-bold text-gray-700 w-1/2">Produtos</h2>
+          <div className="flex gap-1">
+            <Filter type='brand' />
+            <Filter type='model' />
+          </div>
+        </div>
+
         <div className="flex flex-col gap-4 mt-4 w-2/3">
 
           {showModal && (
@@ -103,9 +117,9 @@ const Items = () => {
             </div>
           </div>
 
-          {itemList && (
+          {filteredItems.length > 0 && (
             <List
-              items={itemList}
+              items={filteredItems}
               columnWidths={columnWidths}
               handleDelete={() => setDeleteItem(prevDeleteItem => !prevDeleteItem)}
               type="products"
