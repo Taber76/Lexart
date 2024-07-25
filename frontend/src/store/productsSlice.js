@@ -6,27 +6,24 @@ const productsSlice = createSlice({
     products: [],
     deletedProducts: [],
     filteredProducts: [],
-    filter: [],
+    filter: { brand: null, model: null },
     filterBrandOptions: [],
     filterModelOptions: [],
   },
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
-      state.filteredProducts = action.payload.filter(item => {
-        return state.filter.every(f => {
-          return (
-            (f.brand === undefined || item.brand === f.brand) &&
-            (f.model === undefined || item.model === f.model)
-          );
-        });
-      })
-      state.filterBrandOptions = state.products
+      state.filteredProducts = state.products.filter(item => {
+        return (
+          (state.filter.brand === null || item.brand === state.filter.brand) &&
+          (state.filter.model === null || item.model === state.filter.model)
+        );
+      });
+      state.filterBrandOptions = state.filteredProducts
         .map(item => item.brand)
         .filter((value, index, self) => self.indexOf(value) === index)
         .sort();
-
-      state.filterModelOptions = state.products
+      state.filterModelOptions = state.filteredProducts
         .map(item => item.model)
         .filter((value, index, self) => self.indexOf(value) === index)
         .sort();
@@ -35,20 +32,25 @@ const productsSlice = createSlice({
       state.deletedProducts = action.payload;
     },
     setFilter: (state, action) => {
-      state.filter = action.payload;
-      if (action.payload.length === 0) {
-        state.filteredProducts = state.products;
-      } else {
-        state.filteredProducts = state.products.filter(item => {
-          return action.payload.every(f => {
-            return (
-              (f.brand === undefined || item.brand === f.brand) &&
-              (f.model === undefined || item.model === f.model)
-            );
-          });
-        });
-      }
+      const { type, value } = action.payload;
+      state.filter[type] = value;
+      state.filteredProducts = state.products.filter(item => {
+        return (
+          (state.filter.brand === null || item.brand === state.filter.brand) &&
+          (state.filter.model === null || item.model === state.filter.model)
+        );
+      });
+      state.filterBrandOptions = state.filteredProducts
+        .map(item => item.brand)
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .sort();
+      state.filterModelOptions = state.filteredProducts
+        .map(item => item.model)
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .sort();
+
     },
+
     updateProduct: (state, action) => {
       const { id, updates } = action.payload;
       state.products = state.products.map(product =>

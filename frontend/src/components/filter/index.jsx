@@ -19,7 +19,7 @@ const Filter = ({ type }) => {
       setFilterOptions(models);
       setFilterName('Modelo');
     }
-  }, [type]);
+  }, [type, brands, models]);
 
   const toggleDropdown = () => {
     setDropdownVisible(!isDropdownVisible);
@@ -27,9 +27,11 @@ const Filter = ({ type }) => {
 
   const handleSelect = (value) => {
     if (value === 'all') {
-      dispatch(setFilter([]));
+      dispatch(setFilter({ type, value: null }));
+      setSelectedValue('Todos');
     } else {
-      dispatch(setFilter([{ [type]: value }]));
+      dispatch(setFilter({ type, value }));
+      setSelectedValue(value);
     }
     setDropdownVisible(false);
   };
