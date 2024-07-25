@@ -1,10 +1,12 @@
 import express from 'express';
 import cors from 'cors';
+import http from 'http';
 import expressJSDocSwagger from 'express-jsdoc-swagger';
+import SocketServer from './socket.config';
 import { swaggerConfig } from './swagger.config';
 import { PORT, API_VERSION, CORS_ORIGIN, SYNC_DB } from './environment';
 import { errorHandler } from '../middlewares/error.middleware';
-import PostgreDB from './db';
+import PostgreDB from './db.config';
 import authRoutes from '../routes/auth.routes';
 import productRoutes from '../routes/product.routes';
 
@@ -12,6 +14,7 @@ import productRoutes from '../routes/product.routes';
 export default class Server {
   public app: express.Application;
   private server: any;
+  public socketServer: SocketServer | null = null;
 
   constructor() {
     this.app = express();
@@ -21,6 +24,7 @@ export default class Server {
     this.errorHandler();
     this.setupSwagger();
     this.listen();
+    this.setupWebSocket();
   }
 
   private async database() {
@@ -54,9 +58,14 @@ export default class Server {
   }
 
   private listen() {
-    this.server = this.app.listen(PORT, () => {
+    this.server = http.createServer(this.app);
+    this.server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+  }
+
+  private setupWebSocket() {
+    this.socketServer = new SocketServer(this.server);
   }
 
   public close() {

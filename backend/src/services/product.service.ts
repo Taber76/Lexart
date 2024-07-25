@@ -1,4 +1,5 @@
 import ProductDAO from "../daos/product.dao";
+import { server } from "../app";
 import { ProductAttributes } from "../types";
 import ProductHelper from "../helpers/product.helper";
 import Print from "../utils/print";
@@ -128,6 +129,9 @@ export default class ProductService {
   // DELETE ALL PRODUCTS -------------------------------------------------------
   public static async deleteAll() {
     try {
+
+      //server.socketServer?.sendMessageToClient('products', { type: 'deleteAll' });
+
       const deletedProducts = await ProductDAO.update({ active: false }, true);
       return {
         success: true,
