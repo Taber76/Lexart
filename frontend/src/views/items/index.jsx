@@ -24,26 +24,28 @@ const Items = () => {
     brand: '10%',
     model: '10%',
     description: '40%',
-    quantity: '10%',
-    updated_at: '10%',
+    quantity: '15%',
+    updated_at: '15%',
   }
 
   useEffect(() => {
     const getItems = async () => {
       const res = await apiService.get('products/getall')
-      if (res.status === 202) {
+      if (res.status === 200) {
         const data = await res.json()
-        const items = data.items.map(({ profit_margin, supliers_id, created_at, updated_at, ...rest }) => rest)
+        const items = data.products.map(({ image, active, created_at, ...rest }) => rest)
         if (window.innerWidth < 640) {
           items.forEach((item) => {
-            item.purchase_price = `Precio de compra: $${item.purchase_price}`
-            item.sale_price = `Precio de venta: $${item.sale_price}`
-            item.stock = `Stock: ${item.stock} unidades`
+            item.brand = `Marca: ${item.brand}`
+            item.model = `Modelo: ${item.model}`
+            item.description = `Descrição: ${item.description}`
+            item.quantity = `Estoque: ${item.quantity}`
+            item.updated_at = `Atualizado: ${item.updated_at}`
           })
         }
         setItemList(items)
       } else {
-        activeModal('No se han podido cargar los articulos.')
+        activeModal('Não foi possível carregar os itens.')
       }
     }
 
@@ -53,7 +55,7 @@ const Items = () => {
   return (
     <div className="py-4 md:py-6 bg-gray-100">
       <div className="flex flex-col text-center items-center">
-        <h2 className="text-2xl font-bold text-gray-700">Productos</h2>
+        <h2 className="text-2xl font-bold text-gray-700">Produtos</h2>
         <div className="flex flex-col gap-4 mt-4 w-2/3">
 
           {showModal && (
@@ -70,22 +72,30 @@ const Items = () => {
           <div className="hidden sm:block flex items-center gap-4 w-full">
             <div className="flex flex-col sm:flex-row bg-blue-500 rounded-md shadow-md p-4 w-full">
 
+              <div className={`mb-2 sm:mb-0 items-center justify-center flex`} style={{ minWidth: `${columnWidths.brand}` }}>
+                <h3 className="text-md text-white font-semibold">Marca</h3>
+              </div>
+
+              <div className={`mb-2 sm:mb-0 items-center justify-center flex`} style={{ minWidth: `${columnWidths.model}` }}>
+                <h3 className="text-md text-white font-semibold">Modelo</h3>
+              </div>
+
               <div className={`mb-2 sm:mb-0 items-center justify-center flex`} style={{ minWidth: `${columnWidths.description}` }}>
-                <h3 className="text-md text-white font-semibold">Descripción</h3>
+                <h3 className="text-md text-white font-semibold">Descrição</h3>
               </div>
-              <div className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.purchase_price}` }}>
-                <h3 className="text-sm text-white font-semibold">Precio de compra</h3>
+
+              <div className={`mb-2 sm:mb-0 items-center justify-center flex`} style={{ minWidth: `${columnWidths.quantity}` }}>
+                <h3 className="text-md text-white font-semibold">Estoque</h3>
               </div>
-              <div className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths.sale_price}` }}>
-                <h3 className="text-sm text-white font-semibold">Precio de venta</h3>
+
+              <div className={`mb-2 sm:mb-0 items-center justify-center flex`} style={{ minWidth: `${columnWidths.updated_at}` }}>
+                <h3 className="text-md text-white font-semibold">Atualizado</h3>
               </div>
-              <div className={`mb-2 sm:mb-0 items-center justify-center flex`} style={{ minWidth: `${columnWidths.stock}` }}>
-                <h3 className="text-md text-white font-semibold">Stock</h3>
-              </div>
+
               <div className={`flex items-center justify-end mb-2 sm:mb-0`} style={{ minWidth: `10%` }}>
                 <FaPlus
                   className="text-green-500 mr-2 cursor-pointer"
-                  title="Nuevo"
+                  title="Novo"
                   onClick={() => navigate('/items/register')}
                 />
               </div>
@@ -98,7 +108,7 @@ const Items = () => {
               items={itemList}
               columnWidths={columnWidths}
               handleDelete={() => setDeleteItem(prevDeleteItem => !prevDeleteItem)}
-              type="item"
+              type="products"
             />)}
 
         </div>

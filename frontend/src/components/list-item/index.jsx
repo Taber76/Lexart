@@ -15,13 +15,13 @@ const ListItem = ({ item, columnWidths, handleDelete,
 
   const handleTrash = () => {
     setShowModal(true);
-    setModalText('¿Seguro que quieres borrar este registro?');
+    setModalText('Tem certeza de que deseja excluir este registro?');
   }
 
   const handleComfirmDelete = async () => {
     try {
-      const res = await apiService.delete(`${type}/delete/${item._id}`);
-      if (res.status === 202) {
+      const res = await apiService.delete(`${type}/delete/${item.id}`);
+      if (res.status === 200) {
         setShowModal(false);
         handleDelete();
       } else {
@@ -37,8 +37,12 @@ const ListItem = ({ item, columnWidths, handleDelete,
       <div className="flex flex-col sm:flex-row bg-white rounded-md shadow-md p-4 w-full">
 
         {keys.map((key) => (
-          <div key={key} className={`mb-2 sm:mb-0`} style={{ minWidth: `${columnWidths[key]}` }}>
-            <p className="text-gray-600 text-xs">{item[key]}</p>
+          <div key={key} className={`mb-2 sm:mb-0 flex items-center justify-center`} style={{ minWidth: `${columnWidths[key]}` }}>
+            <p className="text-gray-600 text-xs">
+              {key === 'updated_at'
+                ? new Date(item[key]).toLocaleDateString('pt-BR')
+                : item[key]}
+            </p>
           </div>
         ))}
 
@@ -50,7 +54,7 @@ const ListItem = ({ item, columnWidths, handleDelete,
           />
           <FaTrash
             className="text-red-500 cursor-pointer"
-            title="Borrar"
+            title="Excluir"
             onClick={handleTrash}
           />
         </div>

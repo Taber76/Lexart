@@ -10,19 +10,23 @@ export default class ProductDTO {
         }
       }
 
-    if (typeof price !== 'number')
+    const parsedPrice = typeof price === 'string' ? parseFloat(price) : price;
+    if (isNaN(parsedPrice)) {
       return {
         error: {
           message: 'Invalid price, must be a number'
         }
-      }
+      };
+    }
 
-    if (typeof quantity !== 'number')
+    const parsedQuantity = typeof quantity === 'string' ? parseInt(quantity, 10) : quantity;
+    if (isNaN(parsedQuantity)) {
       return {
         error: {
           message: 'Invalid quantity, must be a number'
         }
-      }
+      };
+    }
 
     return {
       error: null, value: {
@@ -30,9 +34,9 @@ export default class ProductDTO {
         brand,
         model,
         description,
-        price,
+        price: parsedPrice,
         image: 'https://picsum.photos/200/300',
-        quantity
+        quantity: parsedQuantity,
       }
     }
   }

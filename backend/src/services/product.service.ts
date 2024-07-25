@@ -116,7 +116,7 @@ export default class ProductService {
           success: false,
           message: 'Product not found.'
         }
-      const deletedProduct = await ProductDAO.update({ active: false }, false);
+      const deletedProduct = await ProductDAO.update({ id, active: false }, false);
       return {
         success: true,
         message: 'Product deleted successfully.',
