@@ -58,14 +58,32 @@ export default class ProductService {
   }
 
   // CREATE 50 PRODUCTS --------------------------------------------------------
-  public static async createMany() {
+  public static async createMany(wsClient: string) {
     try {
-      const products = ProductHelper.createMany(50);
-      const createdProducts = await ProductDAO.registerMany(products);
+      for (let i = 0; i < 50; i++) {
+        setTimeout(async () => {
+          const product = ProductHelper.createMany(1);
+          // const createdProduct = await ProductDAO.register(product);
+
+          server.socketServer?.sendMessageToClient(wsClient, {
+            type: 'progress',
+            progress: ((i + 1) / 50) * 100,
+          });
+
+          if (i === 49) {
+            server.socketServer?.sendMessageToClient(wsClient, {
+              type: 'createdAllProducts',
+              success: true,
+            });
+          }
+        }, i * 100);
+      }
+
+      //      const createdProducts = await ProductDAO.registerMany(products);
       return {
         success: true,
         message: 'Products created successfully.',
-        products: createdProducts
+        //   products: createdProducts
       }
     } catch (error) {
       return this.handleError(error, false, 'Service creating products [ProductService]');
@@ -115,16 +133,33 @@ export default class ProductService {
   }
 
   // DELETE ALL PRODUCTS -------------------------------------------------------
-  public static async deleteAll() {
+  public static async deleteAll(wsClient: string) {
     try {
 
-      //server.socketServer?.sendMessageToClient('products', { type: 'deleteAll' });
+      for (let i = 0; i < 50; i++) {
+        setTimeout(async () => {
+          //const product = ProductHelper.createMany(1);
+          // const createdProduct = await ProductDAO.register(product);
 
-      const deletedProducts = await ProductDAO.update({ active: false }, true);
+          server.socketServer?.sendMessageToClient(wsClient, {
+            type: 'progress',
+            progress: ((i + 1) / 50) * 100,
+          });
+
+          if (i === 49) {
+            server.socketServer?.sendMessageToClient(wsClient, {
+              type: 'deletedAllProducts',
+              success: true,
+            });
+          }
+        }, i * 50);
+      }
+
+      //const deletedProducts = await ProductDAO.update({ active: false }, true);
       return {
         success: true,
         message: 'Products deleted successfully.',
-        products: deletedProducts
+        //  products: deletedProducts
       }
     } catch (error) {
       return this.handleError(error, false, 'Service deleting all products [ProductService]');

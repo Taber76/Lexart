@@ -73,7 +73,7 @@ export default class ProductController {
 
   public static async createMany(req: Request, res: Response, next: NextFunction) {
     try {
-      const serviceResponse = await ProductService.createMany();
+      const serviceResponse = await ProductService.createMany('8578565');
       if (!serviceResponse.success) {
         res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
         return;
@@ -126,7 +126,7 @@ export default class ProductController {
 
   public static async deleteAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const serviceResponse = await ProductService.deleteAll();
+      const serviceResponse = await ProductService.deleteAll('iuyoiu');
       if (!serviceResponse.success) {
         res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
         return;

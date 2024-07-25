@@ -10,9 +10,9 @@ export default class ProductHelper {
       brand: faker.commerce.productMaterial(),
       model: faker.commerce.productMaterial(),
       description: faker.commerce.productDescription(),
-      price: faker.datatype.number({ min: 1000, max: 10000 }),
+      price: faker.number.int({ min: 1000, max: 10000 }),
       image: 'imageUrl',
-      quantity: faker.datatype.number({ min: 10, max: 100 }),
+      quantity: faker.number.int({ min: 10, max: 100 }),
     }
   }
 

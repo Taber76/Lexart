@@ -1,4 +1,4 @@
-import { Home, Login, Register, ItemRegister, ItemUpdate, Items, ItemsLog, Instructions } from './views';
+import { Admin, Home, Login, Register, ItemRegister, ItemUpdate, Items, ItemsLog, Instructions } from './views';
 import { NavBar, Footer, PrivateRoute } from './components';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ function App() {
 						<Route path="/items/log" element={<ItemsLog />} />
 						<Route path="/items/register" element={<ItemRegister />} />
 						<Route path="/items/update" element={<ItemUpdate />} />
+						<Route path="/admin" element={<Admin />} />
 					</Route>
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />

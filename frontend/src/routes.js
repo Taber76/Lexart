@@ -1,6 +1,6 @@
 
 import { BiHomeAlt2 } from "react-icons/bi";
-import { FaMobileAlt, FaRecycle } from "react-icons/fa";
+import { FaMobileAlt, FaRecycle, FaServer } from "react-icons/fa";
 import { MdOutlineStorage } from "react-icons/md";
 
 export const routes = [
@@ -18,6 +18,11 @@ export const routes = [
     title: "Produtos (log)",
     path: "/items/log",
     Icon: FaRecycle,
+  },
+  {
+    title: "Administração",
+    path: "/admin",
+    Icon: FaServer
   },
   {
     title: "Instruções",

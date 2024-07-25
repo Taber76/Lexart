@@ -1,3 +1,4 @@
+export { Admin } from './admin';
 export { Home } from './home';
 export { Instructions } from './instructions'
 export { Items } from './items'

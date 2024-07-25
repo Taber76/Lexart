@@ -1,5 +1,6 @@
 import { Server as HttpServer } from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
+import ProductService from '../services/product.service';
 
 class SocketServer {
   private wss: WebSocketServer;
@@ -7,36 +8,43 @@ class SocketServer {
 
   constructor(server: HttpServer) {
     this.wss = new WebSocketServer({ server });
-    this.clients = new Map();
+    this.clients = new Map()
 
-    this.wss.on('connection', (ws: WebSocket, req) => {
-      const userId = req.url?.split('=')[1];
+    this.wss.on('connection', (ws: WebSocket) => {
+      const clientId = this.generateUniqueId();
+      this.clients.set(clientId, ws);
+      console.log('New client connected');
 
-      if (userId) {
-        this.clients.set(userId, ws);
-        console.log(`New client connected: ${userId}`);
+      ws.on('message', (message: string) => {
+        const data = JSON.parse(message);
 
-        ws.on('message', (message: string) => {
-          console.log(`Received message from ${userId}: ${message}`);
-        });
+        if (data.type === 'createProducts') {
+          ProductService.createMany(clientId);
+        }
 
-        ws.on('close', () => {
-          this.clients.delete(userId);
-          console.log(`Client disconnected: ${userId}`);
-        });
-      } else {
-        ws.close();
-        console.log('Client connection closed due to missing userId');
-      }
+        if (data.type === 'deleteAllProducts') {
+          ProductService.deleteAll(clientId);
+        }
+      });
+
+      ws.on('close', () => {
+        this.clients.delete(clientId);
+        console.log(`Client disconnected with ID: ${clientId}`);
+      });
     });
   }
 
-  public sendMessageToClient(userId: string, data: any) {
-    const client = this.clients.get(userId);
+  private generateUniqueId(): string {
+    return 'client-' + Math.random().toString(36).substr(2, 9);
+  }
+
+  public sendMessageToClient(clientId: string, data: any) {
+    const client = this.clients.get(clientId);
     if (client && client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(data));
     }
   }
+
 }
 
 export default SocketServer;
