@@ -1,6 +1,7 @@
 import ProductDAO from "../daos/product.dao";
 import { server } from "../app";
 import { ProductAttributes } from "../types";
+import { ProductCreationAttributes } from "../models";
 import ProductHelper from "../helpers/product.helper";
 import Print from "../utils/print";
 
@@ -56,7 +57,7 @@ export default class ProductService {
   }
 
   // CREATE PRODUCT ------------------------------------------------------------
-  public static async create(product: ProductAttributes) {
+  public static async create(product: ProductCreationAttributes) {
     try {
       const createdProduct = await ProductDAO.register(product);
       return {
