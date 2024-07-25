@@ -75,7 +75,9 @@ Product.init(
   {
     sequelize,
     modelName: 'Product',
-    tableName: 'products',
-    timestamps: false,
+    tableName: 'productslex',
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );

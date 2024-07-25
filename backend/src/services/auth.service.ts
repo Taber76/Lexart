@@ -1,5 +1,5 @@
 import UserDAO from '../daos/user.dao';
-import { UserAttributes } from '../types/user.types';
+import { UserCreationAttributes } from '../models';
 import AuthHelper from '../helpers/auth.helper';
 import Print from "../utils/print";
 
@@ -13,16 +13,8 @@ export default class AuthService {
   }
 
   // REGISTER USER -------------------------------------------------------------
-  public static async register(user: UserAttributes, profile_image?: any) {
-    if (!user.username || !user.email || !user.password) {
-      return { success: false, message: 'Missing required fields.' }
-    }
-    if (!AuthHelper.checkPasswordStrength(user.password)) {
-      return { success: false, message: 'Password must be at least 8 characters long.' }
-    }
-
+  public static async register(user: UserCreationAttributes) {
     try {
-      user.password = await AuthHelper.hashPassword(user.password);
       const createdUser = await UserDAO.register(user);
       let message = 'User created successfully.'
 
@@ -37,8 +29,7 @@ export default class AuthService {
   // LOGIN USER ----------------------------------------------------------------
   public static async login(email: string, password: string) {
     try {
-      if (!email && !password) return { success: false, message: 'Missing required fields.' }
-      const user = await UserDAO.login(email);
+      const user = await UserDAO.getByEmail(email);
 
       if (!user || !await AuthHelper.comparePasswords(password, user.password))
         return {
@@ -50,12 +41,22 @@ export default class AuthService {
       return {
         success: true,
         message: 'User logged in successfully.',
-        user: { ...user, password: null },
+        user: { username: user.username },
         token
       };
 
     } catch (error) {
       return this.handleError(error, false, 'Service logging user [AuthService]');
+    }
+  }
+
+  // CHECK USER TOKEN ----------------------------------------------------------
+  public static async checkToken(token: string) {
+    try {
+      const decodedToken = AuthHelper.decodeToken(token);
+      return decodedToken;
+    } catch (error) {
+      return false;
     }
   }
 

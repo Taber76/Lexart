@@ -15,21 +15,6 @@ export default class AuthHelper {
     return await bcrypt.compare(password, hashedPassword);
   }
 
-  public static checkPasswordStrength(password: string) {
-    return password.length >= 8;
-  }
-
-  public static generateCode(): string {
-    return Math.floor(100000 + Math.random() * 900000) as unknown as string;
-  }
-
-  private static validateProfileImage(profile_image: any) {
-    if (profile_image.mimetype !== 'image/jpeg' && profile_image.mimetype !== 'image/png') return false;
-    if (profile_image.size > 1048576) return false;
-    return true;
-  }
-
-
   public static generateToken(user: any) {
     return jwt.sign({ ...user, password: null }, JWT_SECRET as string, { expiresIn: JWT_EXPIRES_IN });
   }
@@ -46,7 +31,6 @@ export default class AuthHelper {
     } catch (error) {
       return false;
     }
-
   }
 
   public static decodeToken(token: string): { [key: string]: any } {

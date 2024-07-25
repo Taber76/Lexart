@@ -3,7 +3,7 @@ import { sequelize } from '../../config/sequelize.config';
 import { UserAttributes } from '../../types'
 
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
+export interface UserCreationAttributes extends Optional<UserAttributes, 'id' | 'created_at' | 'updated_at'> { }
 
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: string;
@@ -52,7 +52,9 @@ User.init(
   {
     sequelize,
     modelName: 'User',
-    tableName: 'users',
-    timestamps: false,
+    tableName: 'userslex',
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );
