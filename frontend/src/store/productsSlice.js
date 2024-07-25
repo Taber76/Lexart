@@ -4,8 +4,9 @@ const productsSlice = createSlice({
   name: 'products',
   initialState: {
     products: [],
+    deletedProducts: [],
     filteredProducts: [],
-    filter: [], // [{brand: 'Samsung'}, {model: 'Galaxy'}]
+    filter: [],
     filterBrandOptions: [],
     filterModelOptions: [],
   },
@@ -29,6 +30,9 @@ const productsSlice = createSlice({
         .map(item => item.model)
         .filter((value, index, self) => self.indexOf(value) === index)
         .sort();
+    },
+    setDeletedProducts: (state, action) => {
+      state.deletedProducts = action.payload;
     },
     setFilter: (state, action) => {
       state.filter = action.payload;
@@ -74,5 +78,5 @@ const productsSlice = createSlice({
   },
 });
 
-export const { setProducts, setFilter, updateProduct, deleteProduct } = productsSlice.actions;
+export const { setProducts, setDeletedProducts, setFilter, updateProduct, deleteProduct } = productsSlice.actions;
 export default productsSlice.reducer;

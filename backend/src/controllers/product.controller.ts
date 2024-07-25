@@ -9,7 +9,7 @@ export default class ProductController {
 
   public static async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const serviceResponse = await ProductService.getAll();
+      const serviceResponse = await ProductService.getAll(true);
       if (!serviceResponse.success) {
         res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
         return;
@@ -40,7 +40,7 @@ export default class ProductController {
 
   public static async getDeleted(req: Request, res: Response, next: NextFunction) {
     try {
-      const serviceResponse = await ProductService.getDeleted();
+      const serviceResponse = await ProductService.getAll(false);
       if (!serviceResponse.success) {
         res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
         return;

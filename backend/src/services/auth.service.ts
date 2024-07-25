@@ -16,9 +16,15 @@ export default class AuthService {
   public static async register(user: UserCreationAttributes) {
     try {
       const createdUser = await UserDAO.register(user);
-      let message = 'User created successfully.'
+      if (!createdUser) return { success: false, message: 'User already exists.' };
 
-      return { success: true, message: message, user: { ...createdUser, password: undefined } };
+      const token = AuthHelper.generateToken(createdUser);
+      return {
+        success: true,
+        message: 'User created successfully.',
+        user: { username: createdUser.username },
+        token
+      };
 
     } catch (error) {
       return this.handleError(error, false, 'Service creating user [AuthService]');

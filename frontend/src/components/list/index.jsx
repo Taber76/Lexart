@@ -1,6 +1,6 @@
 import { ListItem } from "../list-item";
 
-const List = ({ items, columnWidths, handleDelete, type }) => {
+const List = ({ items, columnWidths, handleDelete, type, options }) => {
 
   return (
     <div className="flex flex-col gap-4">
@@ -12,6 +12,7 @@ const List = ({ items, columnWidths, handleDelete, type }) => {
           columnWidths={columnWidths}
           handleDelete={handleDelete}
           type={type}
+          options={options}
         />
       ))}
 

@@ -7,9 +7,7 @@ import { apiService } from '../../services/apiService';
 import { ModalInteractive } from '../modal-interactive';
 import { deleteProduct } from '../../store/productsSlice';
 
-const ListItem = ({ item, columnWidths, handleDelete,
-  type // for delete with apiService and navigate to update (user, contact, ex.)
-}) => {
+const ListItem = ({ item, columnWidths, handleDelete, type, options }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const keys = Object.keys(columnWidths);
@@ -50,18 +48,20 @@ const ListItem = ({ item, columnWidths, handleDelete,
           </div>
         ))}
 
-        <div className={`flex items-center justify-end mb-2 sm:mb-0`} style={{ minWidth: `10%` }}>
-          <FaEdit
-            className="text-green-500 mr-2 cursor-pointer"
-            title="Editar"
-            onClick={() => navigate(`/items/update`, { state: { item_id: item.id } })}
-          />
-          <FaTrash
-            className="text-red-500 cursor-pointer"
-            title="Excluir"
-            onClick={handleTrash}
-          />
-        </div>
+        {options && (
+          <div className={`flex items-center justify-end mb-2 sm:mb-0`} style={{ minWidth: `10%` }}>
+            <FaEdit
+              className="text-green-500 mr-2 cursor-pointer"
+              title="Editar"
+              onClick={() => navigate(`/items/update`, { state: { item_id: item.id } })}
+            />
+            <FaTrash
+              className="text-red-500 cursor-pointer"
+              title="Excluir"
+              onClick={handleTrash}
+            />
+          </div>
+        )}
 
         {showModal && (
           <ModalInteractive

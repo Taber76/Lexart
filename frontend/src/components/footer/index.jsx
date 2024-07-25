@@ -7,7 +7,7 @@ const Footer = () => {
 						<div className="mb-6 md:mb-0">
 							<a href="https://portfolio-taber76.vercel.app/" className="flex items-center">
 								<img src="https://flowbite.com/docs/images/logo.svg" className="h-8 me-3" alt="Logo" />
-								<span className="self-center text-2xl font-semibold whitespace-nowrap text-white">Distribuidora</span>
+								<span className="self-center text-2xl font-semibold whitespace-nowrap text-white">NovaCelular</span>
 							</a>
 						</div>
 					</div>

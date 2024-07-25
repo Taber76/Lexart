@@ -1,39 +1,26 @@
-import { FaPlus } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
-import { setProducts } from '../../store/productsSlice';
-import { Modal, List, Filter } from '../../components';
+import { setDeletedProducts } from '../../store/productsSlice';
+import { List } from '../../components';
 
-const Items = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [modalText, setModalText] = useState('');
-  const items = useSelector(state => state.products.products)
-  const filteredItems = useSelector(state => state.products.filteredProducts)
+const ItemsLog = () => {
+  const items = useSelector(state => state.products.deletedProducts)
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-
-  const activeModal = (text, time) => {
-    setShowModal(true);
-    setModalText(text);
-    setTimeout(() => {
-      setShowModal(false);
-    }, time)
-  }
 
   const columnWidths = {
     brand: '10%',
-    model: '10%',
+    model: '15%',
     description: '40%',
     quantity: '15%',
-    updated_at: '15%',
+    updated_at: '20%',
   }
 
   useEffect(() => {
     const getItems = async () => {
-      const res = await apiService.get('products/getall')
+      const res = await apiService.get('products/getDeleted')
       if (res.status === 200) {
         const data = await res.json()
         const itemsList = data.products.map(({ image, active, created_at, ...rest }) => rest)
@@ -46,7 +33,7 @@ const Items = () => {
             item.updated_at = `Atualizado: ${item.updated_at}`
           })
         }
-        dispatch(setProducts(itemsList))
+        dispatch(setDeletedProducts(itemsList))
       } else {
         activeModal('Não foi possível carregar os itens.')
       }
@@ -56,32 +43,15 @@ const Items = () => {
       getItems()
     }
 
-  }, [filteredItems])
+  }, [])
 
   return (
     <div className="py-4 md:py-6 bg-gray-100">
 
       <div className="flex flex-col text-center items-center">
-        <div className="flex text-center items-center">
-          <h2 className="text-2xl font-bold text-gray-700 w-1/2">Produtos</h2>
-          <div className="flex gap-1">
-            <Filter type='brand' />
-            <Filter type='model' />
-          </div>
-        </div>
+        <h2 className="text-2xl font-bold text-gray-700 w-1/2">Produtos excluídos</h2>
 
         <div className="flex flex-col gap-4 mt-4 w-2/3">
-
-          {showModal && (
-            <Modal
-              text={modalText}
-              width="300px"
-              height="150px"
-              color="blue"
-              textColor="white"
-              margin="0"
-            />
-          )}
 
           <div className="hidden sm:block flex items-center gap-4 w-full">
             <div className="flex flex-col sm:flex-row bg-blue-500 rounded-md shadow-md p-4 w-full">
@@ -106,24 +76,16 @@ const Items = () => {
                 <h3 className="text-md text-white font-semibold">Atualizado</h3>
               </div>
 
-              <div className={`flex items-center justify-end mb-2 sm:mb-0`} style={{ minWidth: `10%` }}>
-                <FaPlus
-                  className="text-green-500 mr-2 cursor-pointer"
-                  title="Novo"
-                  onClick={() => navigate('/items/register')}
-                />
-              </div>
-
             </div>
           </div>
 
-          {filteredItems.length > 0 && (
+          {items.length > 0 && (
             <List
-              items={filteredItems}
+              items={items}
               columnWidths={columnWidths}
               handleDelete={() => setDeleteItem(prevDeleteItem => !prevDeleteItem)}
               type="products"
-              options={true}
+              options={false}
             />)}
 
         </div>
@@ -133,4 +95,4 @@ const Items = () => {
 
 }
 
-export { Items }
+export { ItemsLog }

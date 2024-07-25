@@ -7,9 +7,11 @@ import Print from "../utils/print";
 export default class ProductDAO {
   private constructor() { }
 
-  public static async getAll(): Promise<ProductAttributes[]> {
+  public static async getAll(active: boolean): Promise<ProductAttributes[]> {
     try {
-      const products = await Product.findAll();
+      const products = await Product.findAll({
+        where: { active }
+      });
       return products.map((product) => product.toJSON());
     } catch (error: any) {
       Print.error('Error getting products [DAO].');

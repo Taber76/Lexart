@@ -39,7 +39,7 @@ const NavBar = () => {
 
         <Link className="flex items-center space-x-2" to="/">
           <img src="https://flowbite.com/docs/images/logo.svg" className="h-10 w-10" alt="Logo" />
-          <span className="font-semibold text-white">Distribuidora</span>
+          <span className="font-semibold text-white">NovaCelular</span>
         </Link>
 
         {/* Renderiza NavMobile si el dispositivo es móvil, de lo contrario, renderiza NavDesktop */}

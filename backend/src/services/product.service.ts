@@ -15,9 +15,9 @@ export default class ProductService {
   }
 
   // GET ALL PRODUCTS ----------------------------------------------------------
-  public static async getAll() {
+  public static async getAll(active: boolean) {
     try {
-      const products = await ProductDAO.getAll();
+      const products = await ProductDAO.getAll(active);
       return {
         success: true,
         message: 'Products retrieved successfully.',
@@ -42,19 +42,6 @@ export default class ProductService {
     }
   }
 
-  // GET DELETED PRODUCTS ------------------------------------------------------
-  public static async getDeleted() {
-    try {
-      const products = await ProductDAO.getDeleted();
-      return {
-        success: true,
-        message: 'Products retrieved successfully.',
-        products
-      };
-    } catch (error) {
-      return this.handleError(error, false, 'Service getting deleted products [ProductService]');
-    }
-  }
 
   // CREATE PRODUCT ------------------------------------------------------------
   public static async create(product: ProductCreationAttributes) {

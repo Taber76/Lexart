@@ -1,5 +1,5 @@
-import { Home, Login, UserRegister, ItemRegister, ItemUpdate, Items, Instructions } from './views';
-import { NavBar, Footer } from './components';
+import { Home, Login, Register, ItemRegister, ItemUpdate, Items, ItemsLog, Instructions } from './views';
+import { NavBar, Footer, PrivateRoute } from './components';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -10,11 +10,14 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/instructions" element={<Instructions />} />
-					<Route path="/items" element={<Items />} />
-					<Route path="/items/register" element={<ItemRegister />} />
-					<Route path="/items/update" element={<ItemUpdate />} />
+					<Route element={<PrivateRoute />}>
+						<Route path="/items" element={<Items />} />
+						<Route path="/items/log" element={<ItemsLog />} />
+						<Route path="/items/register" element={<ItemRegister />} />
+						<Route path="/items/update" element={<ItemUpdate />} />
+					</Route>
 					<Route path="/login" element={<Login />} />
-					<Route path="/users/register" element={<UserRegister />} />
+					<Route path="/register" element={<Register />} />
 				</Routes>
 				<Footer />
 			</Router>
@@ -23,3 +26,4 @@ function App() {
 }
 
 export default App;
+
