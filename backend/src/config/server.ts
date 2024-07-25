@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import expressJSDocSwagger from 'express-jsdoc-swagger';
+import { swaggerConfig } from './swagger.config';
 import { PORT, API_VERSION, CORS_ORIGIN, SYNC_DB } from './environment';
 import { errorHandler } from '../middlewares/error.middleware';
 import PostgreDB from './db';
@@ -17,6 +19,7 @@ export default class Server {
     this.middlewares();
     this.routes();
     this.errorHandler();
+    this.setupSwagger();
     this.listen();
   }
 
@@ -44,6 +47,10 @@ export default class Server {
 
   private errorHandler() {
     this.app.use(errorHandler);
+  }
+
+  private setupSwagger() {
+    expressJSDocSwagger(this.app)(swaggerConfig);
   }
 
   private listen() {
