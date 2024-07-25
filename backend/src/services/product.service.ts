@@ -95,7 +95,7 @@ export default class ProductService {
           success: false,
           message: 'Product not found.'
         }
-      const updatedProduct = await ProductDAO.update(product, false);
+      const updatedProduct = await ProductDAO.update({ id, ...product }, false);
       return {
         success: true,
         message: 'Product updated successfully.',

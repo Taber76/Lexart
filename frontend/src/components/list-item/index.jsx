@@ -50,7 +50,7 @@ const ListItem = ({ item, columnWidths, handleDelete,
           <FaEdit
             className="text-green-500 mr-2 cursor-pointer"
             title="Editar"
-            onClick={() => navigate(`/${type}s/update`, { state: { item_id: item._id } })}
+            onClick={() => navigate(`/items/update`, { state: { item_id: item.id } })}
           />
           <FaTrash
             className="text-red-500 cursor-pointer"

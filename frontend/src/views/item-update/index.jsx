@@ -21,12 +21,12 @@ const ItemUpdate = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await apiService.get(`item/getbyid/${location.state.item_id}`)
-      if (res.status === 202) {
+      const res = await apiService.get(`products/getById/${location.state.item_id}`)
+      if (res.status === 200) {
         const data = await res.json();
-        setFormData(data.item)
+        setFormData(data.product)
       } else {
-        activeModal('Error al obtener los datos del producto.', 2500)
+        activeModal('Erro ao obter os dados do produto.', 2500)
       }
     }
     getData()
@@ -36,17 +36,17 @@ const ItemUpdate = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await apiService.postPut('PUT', 'item/update', formData)
-      if (res.status === 202) {
-        activeModal("Productoactualizado correctamente.", 1500)
+      const res = await apiService.postPut('PUT', 'products/update/' + location.state.item_id, formData)
+      if (res.status === 200) {
+        activeModal("Produto atualizado com sucesso.", 1500)
         setTimeout(() => {
-          navegate('/contacts')
+          navegate('/items')
         }, 1500)
       } else {
-        activeModal("Error al intentar actualizar el producto.", 2500)
+        activeModal("Erro ao tentar atualizar o produto.", 2500)
       }
     } catch (error) {
-      activeModal("Error al intentar actualizar el producto.", 2500)
+      activeModal("Erro ao tentar atualizar o produto.", 2500)
     }
   };
 
@@ -56,17 +56,18 @@ const ItemUpdate = () => {
   }
 
   const formDetail = [
-    { type: 'text', name: 'description', value: formData.description, onChange: handleChange, required: true, placeholder: 'Descripcion del item (requerido).' },
-    { type: 'text', name: 'purchase_price', value: formData.purchase_price, onChange: handleChange, required: false, placeholder: 'Precio de compra.' },
-    { type: 'email', name: 'sale_price', value: formData.sale_price, onChange: handleChange, required: false, placeholder: 'Precio de venta.' },
-    { type: 'text', name: 'stock', value: formData.stock, onChange: handleChange, required: false, placeholder: 'Stock.' },
+    { type: 'text', name: 'brand', value: formData.brand, onChange: handleChange, required: true, placeholder: 'Marca' },
+    { type: 'text', name: 'model', value: formData.model, onChange: handleChange, required: true, placeholder: 'Modelo' },
+    { type: 'text', name: 'description', value: formData.description, onChange: handleChange, required: true, placeholder: 'Descrição' },
+    { type: 'number', name: 'quantity', value: formData.quantity, onChange: handleChange, required: true, placeholder: 'Estoque' },
+    { type: 'number', name: 'price', value: formData.price, onChange: handleChange, required: true, placeholder: 'Preço' },
   ]
 
 
   return (
     <div className="py-4 md:py-6">
       <div className="flex flex-col text-center items-center">
-        <h2 className="text-2xl font-bold text-gray-700">Actualiza los datos</h2>
+        <h2 className="text-2xl font-bold text-gray-700">Atualize os dados</h2>
 
         {showModal && (
           <Modal
@@ -83,7 +84,7 @@ const ItemUpdate = () => {
           formDetails={formDetail}
           handleChange={handleChange}
           onSubmit={handleSubmit}
-          buttonText="Actualizar"
+          buttonText="Atualizar"
         />
 
       </div>
