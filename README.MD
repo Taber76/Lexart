@@ -48,6 +48,7 @@ Desarrollar una aplicación web para gestionar productos (teléfonos móviles) u
 - [Frontend en Render](https://lexart-front.onrender.com)
 
 El desploy se hace en **Render**, porque la version Hobby de Vercel no permite el uso de WebSocket".
+
 Usuario de prueba -> **email: admin@admin.com password: admin1234**
 
 
