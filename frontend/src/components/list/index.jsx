@@ -7,7 +7,7 @@ const List = ({ items, columnWidths, handleDelete, type, options }) => {
 
       {items.map((item) => (
         <ListItem
-          key={item._id}
+          key={item.id}
           item={item}
           columnWidths={columnWidths}
           handleDelete={handleDelete}

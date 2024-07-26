@@ -63,7 +63,7 @@ export default class ProductService {
       for (let i = 0; i < 50; i++) {
         setTimeout(async () => {
           const product = ProductHelper.createMany(1);
-          // const createdProduct = await ProductDAO.register(product);
+          await ProductDAO.register(product[0]);
 
           server.socketServer?.sendMessageToClient(wsClient, {
             type: 'progress',
@@ -76,14 +76,14 @@ export default class ProductService {
               success: true,
             });
           }
-        }, i * 100);
+        }, i * 200);
       }
 
-      //      const createdProducts = await ProductDAO.registerMany(products);
+      //const createdProducts = await ProductDAO.registerMany(products);
       return {
         success: true,
         message: 'Products created successfully.',
-        //   products: createdProducts
+        //products: createdProducts
       }
     } catch (error) {
       return this.handleError(error, false, 'Service creating products [ProductService]');
@@ -135,31 +135,28 @@ export default class ProductService {
   // DELETE ALL PRODUCTS -------------------------------------------------------
   public static async deleteAll(wsClient: string) {
     try {
-
-      for (let i = 0; i < 50; i++) {
+      const products = await ProductDAO.getAll(true);
+      for (let i = 0; i < products.length; i++) {
         setTimeout(async () => {
-          //const product = ProductHelper.createMany(1);
-          // const createdProduct = await ProductDAO.register(product);
+          await ProductDAO.update({ id: products[i].id, active: false }, false);
 
           server.socketServer?.sendMessageToClient(wsClient, {
             type: 'progress',
-            progress: ((i + 1) / 50) * 100,
+            progress: ((i + 1) / products.length) * 100,
           });
 
-          if (i === 49) {
+          if (i === products.length - 1) {
             server.socketServer?.sendMessageToClient(wsClient, {
               type: 'deletedAllProducts',
               success: true,
             });
           }
-        }, i * 50);
+        }, i * 200);
       }
 
-      //const deletedProducts = await ProductDAO.update({ active: false }, true);
       return {
         success: true,
         message: 'Products deleted successfully.',
-        //  products: deletedProducts
       }
     } catch (error) {
       return this.handleError(error, false, 'Service deleting all products [ProductService]');

@@ -49,4 +49,25 @@ export const apiService = {
     }
   },
 
+  reloadProducts: async () => {
+    const res = await apiService.get('products/getAll')
+    if (res.status === 200) {
+      const data = await res.json()
+      return data.products
+    } else {
+      return null
+    }
+  },
+
+  reloadDeletedProducts: async () => {
+    const res = await apiService.get('products/getDeleted')
+    if (res.status === 200) {
+      const data = await res.json()
+      return data.products
+    } else {
+      return null
+    }
+  },
+
+
 }

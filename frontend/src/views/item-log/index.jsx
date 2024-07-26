@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { FaSync } from 'react-icons/fa';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { apiService } from '../../services/apiService';
 import { setDeletedProducts } from '../../store/productsSlice';
@@ -45,11 +45,25 @@ const ItemsLog = () => {
 
   }, [])
 
+  const handleRefreshProducts = async () => {
+    const res = await apiService.reloadDeletedProducts();
+    if (res) dispatch(setDeletedProducts(res));
+  }
+
+
   return (
     <div className="py-4 md:py-6 bg-gray-100">
 
-      <div className="flex flex-col text-center items-center">
-        <h2 className="text-2xl font-bold text-gray-700 w-1/2">Produtos excluídos</h2>
+      <div className="flex flex-col text-center items-center ">
+        <h2 className="flex items-center justify-center text-2xl font-bold text-gray-700 w-1/2">
+          Produtos excluídos
+          <FaSync
+            className="text-blue-500 ml-2 cursor-pointer "
+            style={{ fontSize: '12px' }}
+            title="Refresh"
+            onClick={handleRefreshProducts}
+          />
+        </h2>
 
         <div className="flex flex-col gap-4 mt-4 w-2/3">
 

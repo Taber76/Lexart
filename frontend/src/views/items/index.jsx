@@ -1,4 +1,4 @@
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaSync } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -32,6 +32,9 @@ const Items = () => {
   }
 
   useEffect(() => {
+    const maxAttempts = 3
+    let attempts = 0
+
     const getItems = async () => {
       const res = await apiService.get('products/getall')
       if (res.status === 200) {
@@ -51,19 +54,46 @@ const Items = () => {
         activeModal('Não foi possível carregar os itens.')
       }
     }
+    const attemptFetch = () => {
+      if (items.length === 0 && attempts < maxAttempts) {
+        attempts++
+        getItems()
+      }
+      if (attempts >= maxAttempts) {
+        clearInterval(interval)
+      }
+    }
 
     if (items.length === 0) {
       getItems()
+      const interval = setInterval(attemptFetch, 10000)
+      return () => clearInterval(interval)
     }
 
-  }, [filteredItems])
+
+  }, [filteredItems, items])
+
+
+  const handleRefreshProducts = async () => {
+    const res = await apiService.reloadProducts();
+    if (res) dispatch(setProducts(res));
+  }
+
 
   return (
     <div className="py-4 md:py-6 bg-gray-100">
 
       <div className="flex flex-col text-center items-center">
         <div className="flex text-center items-center">
-          <h2 className="text-2xl font-bold text-gray-700 w-1/2">Produtos</h2>
+          <h2 className="flex items-center text-2xl font-bold text-gray-700 w-1/2">
+            Produtos
+            <FaSync
+              className="text-blue-500 ml-2 cursor-pointer "
+              style={{ fontSize: '12px' }}
+              title="Refresh"
+              onClick={handleRefreshProducts}
+            />
+          </h2>
           <div className="flex gap-1">
             <Filter type='brand' />
             <Filter type='model' />
