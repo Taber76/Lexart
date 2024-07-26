@@ -70,7 +70,6 @@ const Items = () => {
       return () => clearInterval(interval)
     }
 
-
   }, [filteredItems, items])
 
 

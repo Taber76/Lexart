@@ -28,9 +28,11 @@ const productsSlice = createSlice({
         .filter((value, index, self) => self.indexOf(value) === index)
         .sort();
     },
+
     setDeletedProducts: (state, action) => {
       state.deletedProducts = action.payload;
     },
+
     setFilter: (state, action) => {
       const { type, value } = action.payload;
       state.filter[type] = value;
@@ -48,7 +50,6 @@ const productsSlice = createSlice({
         .map(item => item.model)
         .filter((value, index, self) => self.indexOf(value) === index)
         .sort();
-
     },
 
     updateProduct: (state, action) => {
@@ -57,27 +58,27 @@ const productsSlice = createSlice({
         product.id === id ? { ...product, ...updates } : product
       );
       state.filteredProducts = state.products.filter(item => {
-        return state.filter.every(f => {
-          return (
-            (f.brand === undefined || item.brand === f.brand) &&
-            (f.model === undefined || item.model === f.model)
-          );
-        });
+        return (
+          (state.filter.brand === null || item.brand === state.filter.brand) &&
+          (state.filter.model === null || item.model === state.filter.model)
+        );
       });
     },
+
     deleteProduct: (state, action) => {
       const { id } = action.payload;
       state.products = state.products.filter(product => product.id !== id);
       state.filteredProducts = state.products.filter(item => {
-        return state.filter.every(f => {
-          return (
-            (f.brand === undefined || item.brand === f.brand) &&
-            (f.model === undefined || item.model === f.model)
-          );
-        });
+        return (
+          (state.filter.brand === null || item.brand === state.filter.brand) &&
+          (state.filter.model === null || item.model === state.filter.model)
+        );
       });
     },
+
   },
+
+
 });
 
 export const { setProducts, setDeletedProducts, setFilter, updateProduct, deleteProduct } = productsSlice.actions;
