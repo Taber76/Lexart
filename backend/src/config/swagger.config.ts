@@ -12,7 +12,7 @@ export const swaggerConfig = {
     },
   },
   baseDir: __dirname,
-  filesPattern: ['../routes/*.ts'],
+  filesPattern: ['../routes/*.js'],
   swaggerUIPath: '/api-docs',
   exposeSwaggerUI: true,
   exposeApiDocs: false,
