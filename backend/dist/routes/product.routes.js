@@ -58,7 +58,7 @@ exports.default = express_1.default
     .post("/create", product_controller_1.default.create)
     /**
    * POST /api/v1/products/createMany
-   * @summary Create multiple products
+   * @summary Create multiple products [DEPRECATED]
    * @tags Product
    * @security BearerAuth
    * @param {array<object>} request.body.required - Product details
@@ -94,7 +94,7 @@ exports.default = express_1.default
     .delete("/delete/:id", product_controller_1.default.delete)
     /**
    * DELETE /api/v1/products/deleteAllProducts
-   * @summary Delete all products
+   * @summary Delete all products [DEPRECATED]
    * @tags Product
    * @security BearerAuth
    * @return {object} 200 - All products deleted

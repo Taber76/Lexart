@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.errorHandler = errorHandler;
+exports.errorHandler = void 0;
 const httpStatusCodes_1 = __importDefault(require("../constants/httpStatusCodes"));
 const print_1 = __importDefault(require("../utils/print"));
 function errorHandler(error, req, res, next) {
@@ -22,3 +22,4 @@ function errorHandler(error, req, res, next) {
         error: (_f = (_e = (_d = error.errors) === null || _d === void 0 ? void 0 : _d.map((e) => e.message).join(", ")) !== null && _e !== void 0 ? _e : error.name) !== null && _f !== void 0 ? _f : "InternalServerError"
     });
 }
+exports.errorHandler = errorHandler;

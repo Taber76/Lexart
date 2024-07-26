@@ -89,12 +89,14 @@ class ProductController {
     static createMany(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const serviceResponse = yield product_service_1.default.createMany('8578565');
+                /*
+                const serviceResponse = await ProductService.createMany('');
                 if (!serviceResponse.success) {
-                    res.status(httpStatusCodes_1.default.BAD_REQUEST).json(serviceResponse);
-                    return;
+                  res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
+                  return;
                 }
-                res.status(httpStatusCodes_1.default.CREATED).json(serviceResponse);
+                  */
+                res.status(httpStatusCodes_1.default.NOT_IMPLEMENTED).json({ success: false, message: 'Not implemented' });
             }
             catch (error) {
                 next(error);
@@ -147,12 +149,14 @@ class ProductController {
     static deleteAll(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const serviceResponse = yield product_service_1.default.deleteAll('iuyoiu');
+                /*
+                const serviceResponse = await ProductService.deleteAll('');
                 if (!serviceResponse.success) {
-                    res.status(httpStatusCodes_1.default.BAD_REQUEST).json(serviceResponse);
-                    return;
+                  res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
+                  return;
                 }
-                res.status(httpStatusCodes_1.default.OK).json(serviceResponse);
+                */
+                res.status(httpStatusCodes_1.default.NOT_IMPLEMENTED).json({ success: false, message: 'Not implemented' });
             }
             catch (error) {
                 next(error);

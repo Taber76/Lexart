@@ -65,7 +65,7 @@ export default express
 
   /**
  * POST /api/v1/products/createMany
- * @summary Create multiple products
+ * @summary Create multiple products [DEPRECATED]
  * @tags Product
  * @security BearerAuth
  * @param {array<object>} request.body.required - Product details
@@ -79,7 +79,7 @@ export default express
 
   /**
  * PUT /api/v1/products/update/{id}
- * @summary Update a product by ID
+ * @summary Update a product by ID 
  * @tags Product
  * @security BearerAuth
  * @param {string} id.path.required - Product ID
@@ -107,7 +107,7 @@ export default express
 
   /**
  * DELETE /api/v1/products/deleteAllProducts
- * @summary Delete all products
+ * @summary Delete all products [DEPRECATED]
  * @tags Product
  * @security BearerAuth
  * @return {object} 200 - All products deleted

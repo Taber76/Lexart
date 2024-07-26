@@ -73,12 +73,14 @@ export default class ProductController {
 
   public static async createMany(req: Request, res: Response, next: NextFunction) {
     try {
-      const serviceResponse = await ProductService.createMany('8578565');
+      /*
+      const serviceResponse = await ProductService.createMany('');
       if (!serviceResponse.success) {
         res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
         return;
       }
-      res.status(HTTP_STATUS.CREATED).json(serviceResponse);
+        */
+      res.status(HTTP_STATUS.NOT_IMPLEMENTED).json({ success: false, message: 'Not implemented' });
     } catch (error) {
       next(error);
     }
@@ -126,12 +128,14 @@ export default class ProductController {
 
   public static async deleteAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const serviceResponse = await ProductService.deleteAll('iuyoiu');
+      /*
+      const serviceResponse = await ProductService.deleteAll('');
       if (!serviceResponse.success) {
         res.status(HTTP_STATUS.BAD_REQUEST).json(serviceResponse);
         return;
       }
-      res.status(HTTP_STATUS.OK).json(serviceResponse);
+      */
+      res.status(HTTP_STATUS.NOT_IMPLEMENTED).json({ success: false, message: 'Not implemented' });
     } catch (error) {
       next(error);
     }
