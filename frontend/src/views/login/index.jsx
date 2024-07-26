@@ -45,6 +45,10 @@ const Login = () => {
 		setFormData({ ...formData, [name]: value });
 	};
 
+	const handleRegisterClick = () => {
+		navigate('/register');
+	};
+
 	return (
 		<div className="py-4 md:py-6">
 			<div className="flex flex-col text-center items-center">
@@ -87,9 +91,9 @@ const Login = () => {
 
 				<p className="mt-4 text-gray-600">
 					Não tem uma conta?{' '}
-					<a href="/register" className="text-blue-500 hover:underline">
+					<button onClick={handleRegisterClick} className="text-blue-500 hover:underline">
 						Registre-se
-					</a>
+					</button>
 				</p>
 			</div>
 		</div>
