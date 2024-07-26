@@ -1,4 +1,3 @@
-Aquí tienes el archivo README en español:
 # Prueba de Desarrollador Full Stack JavaScript
 
 ### Objetivo
